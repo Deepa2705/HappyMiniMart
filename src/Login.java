@@ -224,9 +224,10 @@ public class Login extends javax.swing.JFrame {
         
         else if(usr.equals("Admin")){
         try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection c=DriverManager.getConnection("jdbc:mysql://localhost:3306/happyminimart","root","");
-            String quer="SELECT * FROM ADMIN WHERE username=? AND password=?";
+//            Class.forName("com.mysql.cj.jdbc.Driver");
+//            Connection c=DriverManager.getConnection("jdbc:mysql://localhost:3306/happyminimart","root","");
+            Connection c=CreateDbConnection.createConnection();
+            String quer="SELECT * FROM ADMIN WHERE userid=? AND password=?";
             PreparedStatement ps=c.prepareStatement(quer);
             ps.setString(1,user);
             ps.setString(2,pass);
@@ -250,9 +251,10 @@ public class Login extends javax.swing.JFrame {
         }
         else if(usr.equals("Seller")){
         try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection c=DriverManager.getConnection("jdbc:mysql://localhost:3306/happyminimart","root","");
-            String quer="SELECT * FROM SELLER WHERE ID=? AND password=?";
+//            Class.forName("com.mysql.cj.jdbc.Driver");
+//            Connection c=DriverManager.getConnection("jdbc:mysql://localhost:3306/happyminimart","root","");
+            Connection c=CreateDbConnection.createConnection();
+            String quer="SELECT * FROM SELLER WHERE userId=? AND password=?";
             PreparedStatement ps=c.prepareStatement(quer);
             ps.setString(1,user);
             ps.setString(2,pass);

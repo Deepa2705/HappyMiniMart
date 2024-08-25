@@ -9,6 +9,7 @@
  * @author ELCOT
  */
 
+import java.awt.HeadlessException;
 import java.util.regex.*;
 import java.sql.*;
 import javax.swing.JFrame;
@@ -340,6 +341,7 @@ public class CreateAccount extends javax.swing.JFrame {
     @SuppressWarnings("null")
     private void registerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerButtonActionPerformed
         String fn=fname.getText().trim();
+        String ln=lname.getText().trim();
         String phone=phno.getText().trim();
         String mail=mailid.getText().trim();
         String user=uname.getText().trim();
@@ -348,6 +350,7 @@ public class CreateAccount extends javax.swing.JFrame {
           
         if(fn.equals(""))
             JOptionPane.showMessageDialog(null,"Please enter your name!");
+        
         else if((phone.equals("")) || validPhone(phone)==false){
             JOptionPane.showMessageDialog(null,"Invalid Phone number");
             phno.setText("");
@@ -366,8 +369,9 @@ public class CreateAccount extends javax.swing.JFrame {
         
         if(r.equals("Admin")){
         try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection c=DriverManager.getConnection("jdbc:mysql://localhost:3306/happyminimart","root","");
+//            Class.forName("com.mysql.cj.jdbc.Driver");
+//            Connection c=DriverManager.getConnection("jdbc:mysql://localhost:3306/happyminimart","root","");
+            Connection c=CreateDbConnection.createConnection();
             String quer="INSERT INTO ADMIN VALUES (?,?)";
             PreparedStatement ps=c.prepareStatement(quer);
             ps.setString(1,user);
@@ -380,21 +384,23 @@ public class CreateAccount extends javax.swing.JFrame {
                 setVisible(false);
                 new Login().setVisible(true);
             }
-        }catch(Exception e){
+        }catch(HeadlessException | ClassNotFoundException | SQLException e){
             System.out.println(e);
         }
         }
         else{
         try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection c=DriverManager.getConnection("jdbc:mysql://localhost:3306/happyminimart","root","");
-            String quer="INSERT INTO SELLER VALUES (?,?,?,?,?)";
+//            Class.forName("com.mysql.cj.jdbc.Driver");
+//            Connection c=DriverManager.getConnection("jdbc:derby://localhost:1527/happyminimart","root","");
+            Connection c=CreateDbConnection.createConnection();
+            String quer="INSERT INTO SELLER VALUES (?,?,?,?,?,?)";
             PreparedStatement ps=c.prepareStatement(quer);
             ps.setString(1,user);
             ps.setString(2,pass);
             ps.setString(3,fn);
-            ps.setString(4,phone);
-            ps.setString(5,mail);
+            ps.setString(4,ln);
+            ps.setString(5,phone);
+            ps.setString(6,mail);
             
             int row=ps.executeUpdate();
             
@@ -406,7 +412,7 @@ public class CreateAccount extends javax.swing.JFrame {
         }catch(SQLIntegrityConstraintViolationException e){
             JOptionPane.showMessageDialog(null,"Username already exists!","Message",JOptionPane.WARNING_MESSAGE);
         }
-        catch(Exception e){
+        catch(HeadlessException | ClassNotFoundException | SQLException e){
             System.out.println(e);
         }
         }

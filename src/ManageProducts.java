@@ -1,6 +1,8 @@
 
 import javax.swing.JOptionPane;
 import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 import net.proteanit.sql.DbUtils;
 
@@ -323,14 +325,15 @@ public class ManageProducts extends javax.swing.JFrame {
     }//GEN-LAST:event_priceActionPerformed
 
     private void back_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_back_buttonActionPerformed
-        // TODO add your handling code here:
-        setVisible(false);
-         new SellerFront().setVisible(true);
+
+            setVisible(false);
+            new SellerFront().setVisible(true);
     }//GEN-LAST:event_back_buttonActionPerformed
 
     public void Table(){
         try{
-           Connection c=DriverManager.getConnection("jdbc:mysql://localhost:3306/happyminimart","root","");
+//           Connection c=DriverManager.getConnection("jdbc:mysql://localhost:3306/happyminimart","root","");
+           Connection c=CreateDbConnection.createConnection();
            Statement st=c.createStatement();
            ResultSet rs=st.executeQuery("SELECT * FROM PRODUCT");
            productTable.setModel(DbUtils.resultSetToTableModel(rs));
@@ -350,7 +353,8 @@ public class ManageProducts extends javax.swing.JFrame {
     public void updateCombobox(){
         String query="SELECT * FROM CATEGORY";
         try{
-            Connection c=DriverManager.getConnection("jdbc:mysql://localhost:3306/happyminimart","root","");
+//            Connection c=DriverManager.getConnection("jdbc:mysql://localhost:3306/happyminimart","root","");
+            Connection c=CreateDbConnection.createConnection();
             PreparedStatement ps=c.prepareStatement(query);
             ResultSet rs=ps.executeQuery();
             while(rs.next()){
@@ -377,7 +381,8 @@ public class ManageProducts extends javax.swing.JFrame {
         }
         else{
         try{
-                Connection c=DriverManager.getConnection("jdbc:mysql://localhost:3306/happyminimart","root","");
+//                Connection c=DriverManager.getConnection("jdbc:mysql://localhost:3306/happyminimart","root","");
+                Connection c=CreateDbConnection.createConnection();
                 String pi=pid;
                 String pn=pname;
                 String pc=category.getSelectedItem().toString();
@@ -414,8 +419,9 @@ public class ManageProducts extends javax.swing.JFrame {
         }
         else{
         try{
-                Class.forName("com.mysql.cj.jdbc.Driver");
-                Connection c=DriverManager.getConnection("jdbc:mysql://localhost:3306/happyminimart","root","");
+//                Class.forName("com.mysql.cj.jdbc.Driver");
+//                Connection c=DriverManager.getConnection("jdbc:mysql://localhost:3306/happyminimart","root","");
+                Connection c=CreateDbConnection.createConnection();
                 String quer="INSERT INTO PRODUCT VALUES (?,?,?,?,?)";
                 PreparedStatement ps=c.prepareStatement(quer);
                 ps.setString(1,pid);
@@ -451,7 +457,8 @@ public class ManageProducts extends javax.swing.JFrame {
         }
         else{
         try{
-                Connection c=DriverManager.getConnection("jdbc:mysql://localhost:3306/happyminimart","root","");
+//                Connection c=DriverManager.getConnection("jdbc:mysql://localhost:3306/happyminimart","root","");
+                Connection c=CreateDbConnection.createConnection();
                 String id=product_id.getText();
                 String query="DELETE FROM PRODUCT WHERE ID=?";
                 PreparedStatement ps=c.prepareStatement(query);

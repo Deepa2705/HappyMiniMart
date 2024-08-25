@@ -25,9 +25,10 @@ public class ManageSellers extends javax.swing.JFrame {
     }
 public void Table(){
         try{
-           Connection c=DriverManager.getConnection("jdbc:mysql://localhost:3306/happyminimart","root","");
+//           Connection c=DriverManager.getConnection("jdbc:mysql://localhost:3306/happyminimart","root","");
+           Connection c=CreateDbConnection.createConnection();
            Statement st=c.createStatement();
-           ResultSet rs=st.executeQuery("SELECT ID,Name,Phone_Number,Mail_ID FROM SELLER");
+           ResultSet rs=st.executeQuery("SELECT userid,firstname,lastname,phoneNumber,email FROM SELLER");
            sellerList.setModel(DbUtils.resultSetToTableModel(rs));
         }catch(Exception e){
           System.out.println(e);  
@@ -217,9 +218,10 @@ public void Table(){
         }
         else{
             try{
-                Connection c=DriverManager.getConnection("jdbc:mysql://localhost:3306/happyminimart","root","");
+//                Connection c=DriverManager.getConnection("jdbc:mysql://localhost:3306/happyminimart","root","");
+                Connection c=CreateDbConnection.createConnection();
                 String id=sellerID.getText();
-                String query="DELETE FROM SELLER WHERE ID=?";
+                String query="DELETE FROM SELLER WHERE userid=?";
                 PreparedStatement ps=c.prepareStatement(query);
                 ps.setString(1,id);
                 

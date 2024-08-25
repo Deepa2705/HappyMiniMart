@@ -1,8 +1,12 @@
 import java.sql.*;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import javax.swing.table.DefaultTableModel;
 import net.proteanit.sql.DbUtils;
 import javax.swing.event.*;
 import javax.swing.JOptionPane;
+import java.util.Date;
 
 public class ManageBilling extends javax.swing.JFrame {
 
@@ -294,6 +298,18 @@ public class ManageBilling extends javax.swing.JFrame {
     private void print_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_print_buttonActionPerformed
         try{
             BillTxt.setText(BillTxt.getText()+"\n\n\n\t-------------------------------------------------------------------------------------------\n\t\t\t\t"+"        Total = "+finalPrice+"\n\t-------------------------------------------------------------------------------------------");
+            
+            // to get current date and time
+            ZoneId chennaiZoneId = ZoneId.of("Asia/Kolkata");
+            ZonedDateTime nowInChennai = ZonedDateTime.now(chennaiZoneId);
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            String formattedDateTime = nowInChennai.format(formatter);
+            
+//          BillTxt.setText(BillTxt.getText()+"Printed by: ");
+            BillTxt.setText(BillTxt.getText()+"\n\n\n\n\tOn "+formattedDateTime);
+            BillTxt.setText(BillTxt.getText()+"\n\n\n\n\tPlease check your bill before leaving the shop");
+            BillTxt.setText(BillTxt.getText()+"\n\n\n\n\t\t*****THANK YOU FOR SHOPPING WITH US*****");
             BillTxt.print();
         }catch(Exception e)
         {
@@ -322,7 +338,7 @@ public class ManageBilling extends javax.swing.JFrame {
             total=uprice*qn;
             finalPrice+=total;
             if(i==1){
-                BillTxt.setText("\t\t      HAPPY MINI MART\n\n"+"\tS.NO\tPRODUCT\tPRICE\tQUANTITY\tPRICE\t\n"+"\t-------------------------------------------------------------------------------------------\n\t"+i+"\t"+pname+"\t"+uprice+"\t"+pquantity+"\t"+total+"\n\t");
+                BillTxt.setText("\t\t      HAPPY MINI MART\n\n"+"\n\n\tNagapattinam, TamilNadu. Phone: 9087654321\n\n\n\n"+"\tS.NO\tPRODUCT\tPRICE\tQUANTITY\tPRICE\t\n"+"\t-------------------------------------------------------------------------------------------\n\t"+i+"\t"+pname+"\t"+uprice+"\t"+pquantity+"\t"+total+"\n\t");
             }
             else{
                 BillTxt.setText(BillTxt.getText()+i+"\t"+name.getText()+"\t"+uprice+"\t"+pquantity+"\t"+total+"\n\t");
@@ -348,7 +364,8 @@ public class ManageBilling extends javax.swing.JFrame {
 
 public void Table(){
         try{
-           Connection c=DriverManager.getConnection("jdbc:mysql://localhost:3306/happyminimart","root","");
+//           Connection c=DriverManager.getConnection("jdbc:mysql://localhost:3306/happyminimart","root","");
+           Connection c=CreateDbConnection.createConnection();
            Statement st=c.createStatement();
            ResultSet rs=st.executeQuery("SELECT * FROM PRODUCT");
            productTable.setModel(DbUtils.resultSetToTableModel(rs));
@@ -364,7 +381,8 @@ public void Table(){
     public void updateTable(){
         try{
            String quan=String.valueOf(availableQuantity-Float.parseFloat(quantity.getText()));
-           Connection c=DriverManager.getConnection("jdbc:mysql://localhost:3306/happyminimart","root","");
+//           Connection c=DriverManager.getConnection("jdbc:mysql://localhost:3306/happyminimart","root","");
+           Connection c=CreateDbConnection.createConnection();
            String query="UPDATE PRODUCT SET QUANTITY=? WHERE NAME=?";
            PreparedStatement ps=c.prepareStatement(query);
            ps.setString(1,quan);

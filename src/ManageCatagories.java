@@ -10,6 +10,8 @@
  */
 import javax.swing.JOptionPane;
 import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 import net.proteanit.sql.DbUtils;
 
@@ -281,7 +283,8 @@ public class ManageCatagories extends javax.swing.JFrame {
 
     public void Table(){
         try{
-           Connection c=DriverManager.getConnection("jdbc:mysql://localhost:3306/happyminimart","root","");
+//           Connection c=DriverManager.getConnection("jdbc:mysql://localhost:3306/happyminimart","root","");
+           Connection c=CreateDbConnection.createConnection();
            Statement st=c.createStatement();
            ResultSet rs=st.executeQuery("SELECT * FROM CATEGORY");
            categoryTable.setModel(DbUtils.resultSetToTableModel(rs));
@@ -307,8 +310,9 @@ public class ManageCatagories extends javax.swing.JFrame {
         }
         else{
             try{
-                Class.forName("com.mysql.cj.jdbc.Driver");
-                Connection c=DriverManager.getConnection("jdbc:mysql://localhost:3306/happyminimart","root","");
+//                Class.forName("com.mysql.cj.jdbc.Driver");
+//                Connection c=DriverManager.getConnection("jdbc:mysql://localhost:3306/happyminimart","root","");
+                Connection c=CreateDbConnection.createConnection();
                 String quer="INSERT INTO CATEGORY VALUES (?,?,?)";
                 PreparedStatement ps=c.prepareStatement(quer);
                 ps.setString(1,cid);
@@ -346,7 +350,8 @@ public class ManageCatagories extends javax.swing.JFrame {
         }
         else{
             try{
-                Connection c=DriverManager.getConnection("jdbc:mysql://localhost:3306/happyminimart","root","");
+//                Connection c=DriverManager.getConnection("jdbc:mysql://localhost:3306/happyminimart","root","");
+                Connection c=CreateDbConnection.createConnection();
                 String ci=category_id.getText();
                 String cn=name.getText();
                 String cd=description.getText();
@@ -381,7 +386,8 @@ public class ManageCatagories extends javax.swing.JFrame {
         }
         else{
         try{
-                Connection c=DriverManager.getConnection("jdbc:mysql://localhost:3306/happyminimart","root","");
+//                Connection c=DriverManager.getConnection("jdbc:mysql://localhost:3306/happyminimart","root","");
+                Connection c=CreateDbConnection.createConnection();
                 String id=category_id.getText();
                 String query="DELETE FROM CATEGORY WHERE ID=?";
                 PreparedStatement ps=c.prepareStatement(query);
